@@ -1,0 +1,214 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+
+        <!-- Début de la section d'édition des utilisateurs -->
+        <section class="app-user-edit">
+
+            <!-- Carte contenant le contenu de la section -->
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Titre de la section -->
+                    <h2 class="fw-bolder mb-1">Editier un paiement Fournisseur</h2>
+                    <p class="mb-3">Remplissez le formulaire ci-dessous pour Editier un paiement Fournisseur.</p>
+
+                    <!-- Formulaire d'ajout d'un paiement Fournisseur -->
+                    <form class="form-validate" [formGroup]="editPayementFournisseurForm" (ngSubmit)="editPaymentFournisseur()">
+                        <div class="row ">
+
+                            <!-- Section pour le champ "numPaiement" -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="numPaiement" class="text-danger font-weight-bold">num° Paiement</label>
+                                    <input type="text" id="numPaiement" class="form-control"
+                                        formControlName="numPaiement" name="numPaiement" readonly />
+                                </div>
+                            </div>
+
+                            <!-- Champ: dateCreation -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="dateCreation">Date Création</label>
+                                    <input type="date" id="dateCreation" class="form-control" name="dateCreation"
+                                        formControlName="dateCreation" readonly/>
+                                </div>
+                            </div>
+
+                            <!-- Champ: Fournisseur -->
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="Fournisseur">Fournisseur</label>
+                                    <input type="text" id="Fournisseur" class="form-control" name="Fournisseur"
+                                        formControlName="idFournisseur" readonly />
+                                </div>
+                            </div>
+
+                            <!-- Champ: listModePayement -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="modePayement">Mode Payement</label>
+                                    <select id="modePayement" class="form-control"
+                                        [class.is-invalid]="formPayementFournisseur.idModePayement.invalid && (formPayementFournisseur.idModePayement.touched || submitted)"
+                                        formControlName="idModePayement" name="modePayement">
+                                        <option value="" disabled selected>Choisir votre Mode de Payement</option>
+                                        <option *ngFor="let modePayement of listModePayement"
+                                            [value]="modePayement._id">
+                                            {{ modePayement.libelle }}
+                                        </option>
+                                    </select>
+
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(formPayementFournisseur.idModePayement.touched || submitted) && formPayementFournisseur.idModePayement.hasError('required')">
+                                        Le mode de payement est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Champ: montant -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="montant">Montant</label>
+                                    <input type="text" id="montant" placeholder="Entrez le Montant" class="form-control"
+                                        name="montant" formControlName="montant"
+                                        [class.is-invalid]="formPayementFournisseur.montant.invalid && (formPayementFournisseur.montant.touched || submitted)" />
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(formPayementFournisseur.montant.touched || submitted) && formPayementFournisseur.montant.hasError('required')">
+                                        Le montant est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Champ: echeance -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="echeance">Echeance</label>
+                                    <input type="date" id="echeance" class="form-control" name="echeance"
+                                        formControlName="echeance"
+                                        [class.is-invalid]="formPayementFournisseur.echeance.invalid && (formPayementFournisseur.echeance.touched || submitted)" />
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(formPayementFournisseur.echeance.touched || submitted) && formPayementFournisseur.echeance.hasError('required')">
+                                        La echeance est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Champ: numPiece -->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="numPiece">Num° Piece</label>
+                                    <input type="text" id="numPiece" placeholder="Entrez Num° Piece"
+                                        class="form-control" name="numPiece" formControlName="numPiece"
+                                        [class.is-invalid]="formPayementFournisseur.numPiece.invalid && (formPayementFournisseur.numPiece.touched || submitted)" />
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(formPayementFournisseur.numPiece.touched || submitted) && formPayementFournisseur.numPiece.hasError('required')">
+                                        Le Num° Piece est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Champ: banque -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="banque">Banque</label>
+                                    <select id="banque" class="form-control"
+                                        [class.is-invalid]="formPayementFournisseur.idBanque.invalid && (formPayementFournisseur.idBanque.touched || submitted)"
+                                        formControlName="idBanque" name="banque">
+                                        <option value="" disabled selected>Choisir une Banque</option>
+                                        <option *ngFor="let banque of listBanques" [value]="banque._id">
+                                            {{ banque.libelle }}
+                                        </option>
+                                    </select>
+
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(formPayementFournisseur.idBanque.touched || submitted) && formPayementFournisseur.idBanque.hasError('required')">
+                                        La Banque est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Champ: regle -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="regle">Regle</label>
+                                    <select id="regle" class="form-control"
+                                        [class.is-invalid]="formPayementFournisseur.regle.invalid && (formPayementFournisseur.regle.touched || submitted)"
+                                        formControlName="regle" name="regle">
+                                        <option value="" disabled selected>Choisir une regle</option>
+                                        <option value="en cours">en cours</option>
+                                        <option value="réglé">réglé</option>
+                                        <option value="impayé">impayé</option>
+                                    </select>
+
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(formPayementFournisseur.regle.touched || submitted) && formPayementFournisseur.regle.hasError('required')">
+                                        La Regle est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!--dateRegle-->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="dateRegle">Date Regle</label>
+                                    <input type="date" id="dateRegle" class="form-control" name="dateRegle"
+                                        formControlName="dateRegle"
+                                        [class.is-invalid]="formPayementFournisseur.dateRegle.invalid && (formPayementFournisseur.dateRegle.touched || submitted)" />
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(formPayementFournisseur.dateRegle.touched || submitted) && formPayementFournisseur.dateRegle.hasError('required')">
+                                        La Date Regle est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            
+                            <!-- Champ: Checkbox Escompte -->
+                            <div class="col-md-2 mt-4">
+                                <div class="custom-control custom-control-danger custom-checkbox">
+                                    <input (change)="toggleEscompte($event)" type="checkbox"
+                                        class="custom-control-input" id="colorCheck5" formControlName="esCompte" />
+                                    <label class="custom-control-label" for="colorCheck5">Escompte</label>
+                                </div>
+                            </div>
+
+                            <!-- Champ: Date Escompte -->
+                            <div class="col-md-3 mt-2">
+                                <div class="form-group">
+                                    <label for="dateEscompte">Date Escompte</label>
+                                    <input type="date" id="dateEscompte" class="form-control" name="dateEscompte"
+                                        [disabled]="!isEscompteChecked" formControlName="dateEsCompte" />
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <!-- Boutons pour enregistrer ou annuler -->
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary mr-1 mt-1" rippleEffect>
+                                    Editier Payement Fournisseur
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary mt-1" rippleEffect
+                                    (click)="resetFormPayementFournisseur()">
+                                    Réinitialiser
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </section>
+        <!-- Fin de la section d'édition des utilisateurs -->
+    </div>
+</div>

@@ -1,0 +1,233 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+
+        <!-- Début de la section d'édition des utilisateurs -->
+        <section class="app-user-edit">
+
+            <!-- Carte contenant le contenu de la section -->
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Onglets de navigation -->
+                    <ul ngbNav #nav="ngbNav" class="nav nav-pills">
+                        <!-- Onglet pour "Ajouter Banque" -->
+                        <li ngbNavItem>
+
+                            <!-- Contenu de l'onglet pour la section Informations -->
+                            <ng-template ngbNavContent>
+                                <!-- Tab de Informations -->
+                                <div class="tab-pane" id="information" aria-labelledby="information-tab"
+                                    role="tabpanel">
+                                    <!-- Formulaire d'édition des informations d'utilisateur -->
+                                    <form (ngSubmit)="addBanque()" [formGroup]="addBanqueForm" class="form-validate">
+
+                                        <div class="row">
+                                            <!-- Avatar et options de téléchargement/réinitialisation -->
+                                            <div class="media col-12 ml-3 mb-2">
+                                                <a href="javascript:void(0);" class="mr-25">
+                                                    <!-- Image de profil par défaut ou personnalisée -->
+                                                    <img [src]="avatarImage || '../../../../../assets/images/avatars/banque.png'"
+                                                        class="rounded mr-50" alt="image de profil" height="76"
+                                                        width="80" />
+                                                </a>
+                                                <div class="media-body mt-2 ml-1">
+                                                    <!-- Bouton pour télécharger une nouvelle image -->
+                                                    <button (click)="onUploadClick($event)"
+                                                        class="btn btn-sm btn-primary mb-75 mr-75" rippleEffect>
+                                                        Télécharger
+                                                    </button>
+                                                    <input type="file" #file id="account-upload" hidden
+                                                        (change)="uploadImage($event)" />
+                                                    <!-- Bouton pour réinitialiser l'image -->
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary mb-75"
+                                                        (click)="resetImage()" rippleEffect>
+                                                        Réinitialiser
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- Fin de la section Avatar -->
+
+                                            <!-- Section pour le champ "Code" -->
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="code" class="text-danger font-weight-bold">Code</label>
+                                                    <input type="text" id="code" class="form-control"
+                                                        formControlName="code" name="code" [value]="codeBanque"
+                                                        readonly />
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: libelle -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="libelle">Libellé</label>
+                                                    <input type="text" id="libelle" placeholder="Entrez le libellé"
+                                                        class="form-control" name="libelle" formControlName="libelle"
+                                                        [class.is-invalid]="formBanque.libelle.invalid && (formBanque.libelle.touched || submitted)"
+                                                         />
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: adresse -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="adresse">Adresse</label>
+                                                    <input type="text" id="adresse"
+                                                        placeholder="Entrez l'adresse complète" class="form-control"
+                                                        name="adresse" formControlName="adresse"
+                                                        [class.is-invalid]="formBanque.adresse.invalid && (formBanque.adresse.touched || submitted)"
+                                                         />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger"
+                                                        *ngIf="(formBanque.adresse.touched || submitted) && formBanque.adresse.hasError('required')">
+                                                        L'adresse est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: code_postal -->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="code_postal">Code Postal</label>
+                                                    <input type="text" id="code_postal"
+                                                        placeholder="Entrez le code postal" class="form-control"
+                                                        name="code_postal" formControlName="code_postal"  />
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: ville -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="ville">Ville</label>
+                                                    <input type="text" id="ville"
+                                                        placeholder="Entrez le nom de la ville" class="form-control"
+                                                        name="ville" formControlName="ville"
+                                                        [class.is-invalid]="formBanque.ville.invalid && (formBanque.ville.touched || submitted)"
+                                                         />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger"
+                                                        *ngIf="(formBanque.ville.touched || submitted) && formBanque.ville.hasError('required')">
+                                                        La ville est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: region -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="region">Région</label>
+                                                    <select id="region" class="form-control"
+                                                        [class.is-invalid]="formBanque.region.invalid && (formBanque.region.touched || submitted)"
+                                                        formControlName="region" name="region" >
+                                                        <option value="" disabled selected>Choisir une Région</option>
+                                                        <option *ngFor="let region of listRegions" [value]="region._id">
+                                                            {{ region.libelle }}
+                                                        </option>
+                                                    </select>
+
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger"
+                                                        *ngIf="(formBanque.region.touched || submitted) && formBanque.region.hasError('required')">
+                                                        La région est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: pays -->
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="pays">Pays</label>
+                                                    <input type="text" id="pays" placeholder="Entrez le pays"
+                                                        class="form-control" name="pays" formControlName="pays"
+                                                         />
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: telephone -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="telephone">Téléphone</label>
+                                                    <input type="text" id="telephone" class="form-control"
+                                                        placeholder="Entrez le numéro de téléphone" name="telephone"
+                                                        formControlName="telephone"
+                                                        [class.is-invalid]="formBanque.telephone.invalid && (formBanque.telephone.touched || submitted)"
+                                                         />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger"
+                                                        *ngIf="(formBanque.telephone.touched || submitted) && formBanque.telephone.hasError('required')">
+                                                        Le numéro de téléphone est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: email -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="email">E-mail</label>
+                                                    <input type="text" id="email"
+                                                        placeholder="Entrez votre adresse e-mail" class="form-control"
+                                                        name="email" formControlName="email"
+                                                        [class.is-invalid]="formBanque.email.invalid && (formBanque.email.touched || submitted)"
+                                                         />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger"
+                                                        *ngIf="(formBanque.email.touched || submitted) && formBanque.email.hasError('required')">
+                                                        L'e-mail est obligatoire.
+                                                    </small>
+                                                    <small class="text-danger"
+                                                        *ngIf="(formBanque.email.touched || submitted) && formBanque.email.hasError('email')">
+                                                        L'adresse e-mail n'est pas valide.
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: telecopie -->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="telecopie">Télécopie</label>
+                                                    <input type="text" id="telecopie"
+                                                        placeholder="Entrez le numéro de télécopie" class="form-control"
+                                                        name="telecopie" formControlName="telecopie"  />
+                                                </div>
+                                            </div>
+
+                                            <!-- Champ: site_web -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="site_web">Site Web</label>
+                                                    <input type="text" id="site_web"
+                                                        placeholder="Entrez l'adresse du site web" class="form-control"
+                                                        name="site_web" formControlName="site_web"  />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Boutons pour enregistrer ou annuler -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary mr-1 mt-1" rippleEffect>
+                                                    Ajouter Nouvelle Banque
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary mt-1"
+                                                    rippleEffect (click)="resetFormBanque()">
+                                                    Réinitialiser
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                    <!-- Fin du formulaire d'édition des informations -->
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <!-- Sortie des onglets -->
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                </div>
+            </div>
+
+        </section>
+        <!-- Fin de la section d'édition des utilisateurs -->
+    </div>
+</div>

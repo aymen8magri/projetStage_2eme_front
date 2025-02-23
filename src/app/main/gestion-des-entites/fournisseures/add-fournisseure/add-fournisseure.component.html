@@ -1,0 +1,511 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- Début de la section d'édition des utilisateurs -->
+        <section class="app-user-edit">
+            <!--partie obligatoire-->
+            <div class="card">
+                <div class="card-body">
+                    <form (ngSubmit)="addfournisseur()" [formGroup]="addfournisseurForm" class="form-validate">
+                         <!-- Submit and Cancel Buttons -->
+                         <div class="col-md-12 text-right">
+                            <button type="submit" class="btn btn-primary mr-1 mb-1">Ajouter Fournisseur</button>
+                        </div>
+                        <div class="row">
+                            <!-- Section pour le champ "Code" -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="code" class="text-danger font-weight-bold">Code</label>
+                                    <input type="text" id="code" class="form-control" formControlName="code" name="code" [value]="codeValue" readonly />
+                                </div>
+                            </div>
+
+                            <!-- Section pour le champ "Libellé" -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="libelle">Libellé</label>
+                                    <input type="text" id="libelle" class="form-control" placeholder="Entrez le libellé"
+                                             formControlName="libelle" [class.is-invalid]="formulaireFournisseur.libelle.invalid && (formulaireFournisseur.libelle.touched || submitted)" name="libelle" />
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger" *ngIf="(formulaireFournisseur.libelle.touched || submitted) && formulaireFournisseur.libelle.hasError('required')">
+                                        Ce champ est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Section pour le champ "Contact" -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="contact">Contact</label>
+                                    <input type="text" id="contact" class="form-control" placeholder="Entrez votre contact"
+                                             formControlName="contact" [class.is-invalid]="formulaireFournisseur.contact.invalid && (formulaireFournisseur.contact.touched || submitted)" name="contact" />
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger" *ngIf="(formulaireFournisseur.contact.touched || submitted) && formulaireFournisseur.contact.hasError('required')">
+                                        Le contact est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+
+            <!-- Carte contenant le contenu de la section -->
+            <div class="card">
+                <div class="card-body">
+
+                    
+                    <!-- Onglets de navigation -->
+                    <ul ngbNav #nav="ngbNav" class="nav nav-pills">
+                        <!-- Onglet Général -->
+                        <li ngbNavItem>
+                            <a ngbNavLink class="d-flex align-items-center">
+                                <i data-feather="globe" class="mr-sm-50"></i>
+                                <span class="d-none d-sm-block">Général</span>
+                            </a>
+
+                            <!-- Contenu de l'onglet "Général" -->
+                            <ng-template ngbNavContent>
+                                <!-- Début de la section de contenu de l'onglet -->
+                                <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+                                    
+
+                                    <!-- Début du formulaire d'édition -->
+                                    <form (ngSubmit)="addfournisseur()" [formGroup]="addfournisseurFormGeneral" class="form-validate">
+                                        <div class="row">
+                                            <!-- Champ: raison_sociale -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="raison_sociale">Raison Social</label>
+                                                    <input type="text" id="raison_sociale" class="form-control" placeholder="Entrez la raison sociale de l'entreprise"
+                                                             name="raison_sociale" formControlName="raison_sociale" [class.is-invalid]="formulaireFournisseurGeneral.raison_sociale.invalid && (formulaireFournisseurGeneral.raison_sociale.touched || submitted)" />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurGeneral.raison_sociale.touched || submitted) && formulaireFournisseurGeneral.raison_sociale.hasError('required')">
+                                                        La raison sociale est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: adresse -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="adresse">Adresse</label>
+                                                    <input type="text" id="adresse" placeholder="Entrez l'adresse complète"
+                                                             class="form-control" name="adresse" formControlName="adresse"
+                                                             [class.is-invalid]="formulaireFournisseurGeneral.adresse.invalid && (formulaireFournisseurGeneral.adresse.touched || submitted)" />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurGeneral.adresse.touched || submitted) && formulaireFournisseurGeneral.adresse.hasError('required')">
+                                                        L'adresse est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: code_postal -->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="code_postal">Code Postal</label>
+                                                    <input type="text" id="code_postal" placeholder="Entrez le code postal" class="form-control" name="code_postal" formControlName="code_postal" />
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: ville -->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="ville">Ville</label>
+                                                    <input type="text" id="ville" placeholder="Entrez le nom de la ville" class="form-control" name="ville" formControlName="ville" />
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: region -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="region">Région</label>
+                                                    <select
+                                                        id="region"
+                                                        class="form-control"
+                                                        [class.is-invalid]="formulaireFournisseurGeneral.region.invalid && (formulaireFournisseurGeneral.region.touched || submitted)"
+                                                        formControlName="region"
+                                                        name="region"
+                                                        
+                                                        >
+                                                        <option value="" disabled selected>Choisir une Région</option>
+                                                        <option *ngFor="let region of listRegions" [value]="region._id">
+                                                            {{ region.libelle }}
+                                                        </option>
+                                                    </select>
+
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurGeneral.region.touched || submitted) && formulaireFournisseurGeneral.region.hasError('required')">
+                                                        La région est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: pays -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="pays">Pays</label>
+                                                    <input type="text" id="pays" placeholder="Entrez le pays" class="form-control" name="pays" formControlName="pays" />
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: telephone -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="telephone">Téléphone</label>
+                                                    <input type="text" id="telephone" class="form-control" placeholder="Entrez le numéro de téléphone"
+                                                             name="telephone" formControlName="telephone"
+                                                             [class.is-invalid]="formulaireFournisseurGeneral.telephone.invalid && (formulaireFournisseurGeneral.telephone.touched || submitted)" />
+                                                     <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurGeneral.telephone.touched || submitted) && formulaireFournisseurGeneral.telephone.hasError('required')">
+                                                        Le numéro de téléphone est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: email -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="email">E-mail</label>
+                                                    <input type="text" id="email" placeholder="Entrez votre adresse e-mail" class="form-control"
+                                                             name="email" formControlName="email"
+                                                             [class.is-invalid]="formulaireFournisseurGeneral.email.invalid && (formulaireFournisseurGeneral.email.touched || submitted)" />
+                                                     <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurGeneral.email.touched || submitted) && formulaireFournisseurGeneral.email.hasError('required')">
+                                                        L'e-mail est obligatoire.
+                                                    </small>
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurGeneral.email.touched || submitted) && formulaireFournisseurGeneral.email.hasError('email')">
+                                                        L'adresse e-mail n'est pas valide.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: telecopie -->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="telecopie">Télécopie</label>
+                                                    <input type="text" id="telecopie" placeholder="Entrez le numéro de télécopie" class="form-control" name="telecopie" formControlName="telecopie" />
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: site_web -->
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="site_web">Site Web</label>
+                                                    <input type="text" id="site_web" placeholder="Entrez l'adresse du site web" class="form-control" name="site_web" formControlName="site_web" />
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: registre_comercial -->
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="registre_comercial">Registre Commercial</label>
+                                                    <input type="text" id="registre_comercial" placeholder="Entrez le numéro du registre commercial" class="form-control" name="registre_comercial" formControlName="registre_comercial" />
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: matricule_fiscal -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="matricule_fiscal">Matricule Fiscal</label>
+                                                    <input type="text" id="matricule_fiscal" placeholder="Entrez le matricule fiscal" 
+                                                            class="form-control" name="matricule_fiscal"
+                                                             formControlName="matricule_fiscal" [class.is-invalid]="formulaireFournisseurGeneral.matricule_fiscal.invalid && (formulaireFournisseurGeneral.matricule_fiscal.touched || submitted)" />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurGeneral.matricule_fiscal.touched || submitted) && formulaireFournisseurGeneral.matricule_fiscal.hasError('required')">
+                                                        Le matricule fiscal est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Boutons d'action -->
+                                            <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+                                                <!-- Bouton Réinitialiser -->
+                                                <button type="button" (click)="resetformulaireFournisseurGeneral()" class="btn btn-outline-secondary" rippleEffect>
+                                                    Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                    </form>
+                                    <!-- Fin du formulaire -->
+                                </div>
+                                <!-- Fin de la section de contenu de l'onglet -->
+                            </ng-template>
+                        </li>
+
+
+                        <!-- Tab Item for Personne Physique -->
+                        <li ngbNavItem>
+                            <!-- Link for the Personne Physique Tab -->
+                            <a ngbNavLink class="d-flex align-items-center">
+                            <i data-feather="user" class="mr-sm-50"></i> <!-- Icon for user -->
+                            <span class="d-none d-sm-block">Personne Physique</span> <!-- Tab label, visible on larger screens -->
+                            </a>
+                            
+                            <!-- Tab Content for Information Section -->
+                            <ng-template ngbNavContent>
+                            <!-- Information Tab Starts -->
+                            <div class="tab-pane" id="information" aria-labelledby="information-tab" role="tabpanel">
+                            <!-- Users Edit Information Form Start -->
+                                <form (ngSubmit)="addfournisseur()" [formGroup]="addfournisseurFormPersonne" class="form-validate">
+                                    <div class="row mt-1">
+                                        <!-- Section: Personal Information Header -->
+                                        <div class="col-12">
+                                            <h4 class="mb-1">
+                                                <i data-feather="user" [size]="16" class="mr-75 font-medium-4"></i> <!-- Icon for user -->
+                                                <span class="align-middle">Personal Information</span> <!-- Header Text -->
+                                            </h4>
+                                        </div>
+                                    
+                                        <!-- Avatar et options de téléchargement/réinitialisation -->
+                                        <div class="media col-12 ml-5">
+                                            <a href="javascript:void(0);" class="mr-25">
+                                                <!-- Image de profil par défaut ou personnalisée -->
+                                                <img [src]="avatarImage || '../../../../../assets/images/avatars/fournisseur.png'"
+                                                    class="rounded mr-50" alt="profile image" height="76" width="80" />
+                                            </a>
+                                            <div class="media-body mt-2 ml-1">
+                                                <!-- Bouton pour télécharger une nouvelle image -->
+                                                <button (click)="onUploadClick($event)" class="btn btn-sm btn-primary mb-75 mr-75" rippleEffect>
+                                                    Upload
+                                                </button>
+                                                <input type="file" #file id="account-upload" hidden (change)="uploadImage($event)" />
+                                                <!-- Bouton pour réinitialiser l'image -->
+                                                <button type="button" class="btn btn-sm btn-outline-secondary mb-75" (click)="resetImage()" rippleEffect>
+                                                    Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Fin de la section Avatar -->
+                                    
+                                        <!-- Champ: nom -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="nom">Nom</label>
+                                                <input type="text" id="nom" class="form-control" placeholder="Entrez le nom du Fournisseur"
+                                                         formControlName="nom" name="nom" [class.is-invalid]="formulaireFournisseurPersonne.nom.invalid && (formulaireFournisseurPersonne.nom.touched || submitted)" />
+                                                <!-- Messages d'erreur -->
+                                                <small class="text-danger" *ngIf="(formulaireFournisseurPersonne.nom.touched || submitted) && formulaireFournisseurPersonne.nom.hasError('required')">
+                                                    Le nom est obligatoire.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: prenom -->
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="prenom">Prénom</label>
+                                                <input type="text" id="prenom" placeholder="Entrez le prénom du Fournisseur" class="form-control"
+                                                         formControlName="prenom" name="prenom" [class.is-invalid]="formulaireFournisseurPersonne.prenom.invalid && (formulaireFournisseurPersonne.prenom.touched  || submitted)" />
+                                                <!-- Messages d'erreur -->
+                                                <small class="text-danger" *ngIf="(formulaireFournisseurPersonne.prenom.touched  || submitted) && formulaireFournisseurPersonne.prenom.hasError('required')">
+                                                    Le prénom est obligatoire.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: num_cin -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="num_cin">N° C.I.N</label>
+                                                <input type="text" id="num_cin" placeholder="Entrez le numéro de CIN" class="form-control" formControlName="num_cin" name="num_cin" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: date_obtenation_cin -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="date_obtenation_cin">Date Obtenation C.I.N</label>
+                                                <input type="date" id="date_obtenation_cin" class="form-control" formControlName="date_obtenation_cin" name="date_obtenation_cin" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: lieu_obtenation_cin -->
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="lieu_obtenation_cin">Lieu Obtenation C.I.N</label>
+                                                <input type="text" id="lieu_obtenation_cin" placeholder="Entrez le lieu d'obtention du CIN" class="form-control" formControlName="lieu_obtenation_cin" name="lieu_obtenation_cin" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: adresse_Permanente -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="adresse_Permanente">Adresse Permanente</label>
+                                                <input type="text" id="adresse_Permanente" placeholder="Entrez l'adresse permanente" class="form-control" formControlName="adresse_Permanente" name="adresse_Permanente" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Section: Address Header -->
+                                        <div class="col-12">
+                                            <h4 class="mb-1 mt-2">
+                                                <i data-feather="paperclip" [size]="16" class="mr-75 font-medium-4"></i> <!-- Icon for address -->
+                                                <span class="align-middle">Passeport et Permis</span> <!-- Header Text -->
+                                            </h4>
+                                        </div>
+                                    
+                                        <!-- Champ: num_passeport -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="num_passeport">N° Passeport</label>
+                                                <input type="text" id="num_passeport" class="form-control" placeholder="Entrez le numéro de passeport" formControlName="num_passeport" name="num_passeport" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: date_obtenation_passeport -->
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="date_obtenation_passeport">Date Obtenation Passeport</label>
+                                                <input type="date" id="date_obtenation_passeport" class="form-control" formControlName="date_obtenation_passeport" name="date_obtenation_passeport" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: lieu_obtenation_passeport -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lieu_obtenation_passeport">Lieu Obtenation Passeport</label>
+                                                <input type="text" id="lieu_obtenation_passeport" placeholder="Entrez le lieu d'obtention du passeport" class="form-control" formControlName="lieu_obtenation_passeport" name="lieu_obtenation_passeport" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: num_permi -->
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="num_permi">N° Permi</label>
+                                                <input type="text" id="num_permi" placeholder="Entrez le numéro de permis" class="form-control" formControlName="num_permi" name="num_permi" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: date_obtenation_permis -->
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="date_obtenation_permis">Date Obtenation permis</label>
+                                                <input type="date" id="date_obtenation_permis" class="form-control" formControlName="date_obtenation_permis" name="date_obtenation_permis" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Champ: lieu_obtenation_permis -->
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="lieu_obtenation_permis">Lieu Obtenation permis</label>
+                                                <input type="text" id="lieu_obtenation_permis" placeholder="Entrez le lieu d'obtention du permis" class="form-control" formControlName="lieu_obtenation_permis" name="lieu_obtenation_permis" />
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Save and Reset Buttons -->
+                                        <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+                                            <button type="button" (click)="resetformulaireFournisseurPersonne()"  class="btn btn-outline-secondary" rippleEffect>Reset</button>
+                                        </div>
+                                    </div>
+                                    
+                                </form>
+                                <!-- Users Edit Information Form Ends -->
+                            </div>
+                            <!-- Information Tab Ends -->
+                            </ng-template>
+                        </li>
+
+
+                        <li ngbNavItem>
+                            <!-- Tab Link for Financial Information -->
+                            <a ngbNavLink class="d-flex align-items-center">
+                                <i data-feather="pie-chart" class="mr-sm-50"></i>
+                                <span class="d-none d-sm-block">Informations Financières</span>
+                            </a>
+                        
+                            <!-- Tab Content: Social Media Links Form -->
+                            <ng-template ngbNavContent>
+                                <!-- Social Tab starts -->
+                                <div class="tab-pane" id="social" aria-labelledby="social-tab" role="tabpanel">
+                                    <!-- User's social media form starts -->
+                                    <form (ngSubmit)="addfournisseur()" [formGroup]="addfournisseurFormInfos" class="form-validate">
+                                        <div class="row">
+                                            <!-- Champ: banque -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="banque">Banque</label>
+                                                    <select id="banque" class="form-control" [class.is-invalid]="formulaireFournisseurInfos.banque.invalid && (formulaireFournisseurInfos.banque.touched || submitted)" formControlName="banque" name="banque" >
+                                                        <option value="" disabled selected>Choisir une banque</option>
+                                                        <option *ngFor="let banque of listBanques" [value]="banque._id">{{ banque.libelle }}</option>
+                                                    </select>
+                                                    <!-- Message d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurInfos.banque.touched || submitted) && formulaireFournisseurInfos.banque.hasError('required')">
+                                                        Veuillez sélectionner une banque.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: agence -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="agence">Agence</label>
+                                                    <input type="text" id="agence" placeholder="Entrez le nom de l'agence" class="form-control"
+                                                             formControlName="agence" [class.is-invalid]="formulaireFournisseurInfos.agence.invalid && (formulaireFournisseurInfos.agence.touched || submitted)" name="agence" />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurInfos.agence.touched || submitted) && formulaireFournisseurInfos.agence.hasError('required')">
+                                                        Le nom de l'agence est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: compte -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="compte">Compte</label>
+                                                    <input type="text" id="compte" placeholder="Entrez le numéro de compte" class="form-control"
+                                                             formControlName="compte" [class.is-invalid]="formulaireFournisseurInfos.compte.invalid && (formulaireFournisseurInfos.compte.touched || submitted)" name="compte" />
+                                                    <!-- Messages d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurInfos.compte.touched || submitted) && formulaireFournisseurInfos.compte.hasError('required')">
+                                                        Le numéro de compte est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: credit_max -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="credit_max">Credit Max</label>
+                                                    <input type="text" id="credit_max" placeholder="Entrez le montant du crédit maximum" class="form-control"
+                                                             formControlName="credit_max" [class.is-invalid]="formulaireFournisseurInfos.credit_max.invalid && (formulaireFournisseurInfos.credit_max.touched || submitted)" name="credit_max" />
+                                                    <!-- Message d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurInfos.credit_max.touched || submitted) && formulaireFournisseurInfos.credit_max.hasError('required')">
+                                                        Le montant du crédit maximum est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Champ: RIB -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="RIB">RIB</label>
+                                                    <input id="RIB" class="form-control" type="text" placeholder="1234 5678 8765 4321" [mask]="'0000 0000 0000 0000'" 
+                                                            formControlName="RIB" [class.is-invalid]="formulaireFournisseurInfos.RIB.invalid && (formulaireFournisseurInfos.RIB.touched || submitted)" />
+                                                    <!-- Message d'erreur -->
+                                                    <small class="text-danger" *ngIf="(formulaireFournisseurInfos.RIB.touched || submitted) && formulaireFournisseurInfos.RIB.hasError('required')">
+                                                        Le champ RIB est obligatoire.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Save and Reset Buttons -->
+                                            <div class="col-12 d-flex flex-sm-row flex-column mt-2">
+                                                <button type="button" (click)="resetformulaireFournisseurInfos()" class="btn btn-outline-secondary" rippleEffect>Reset</button>
+                                            </div>
+                                        </div>
+                                        
+                                    </form>
+                                    <!-- User's social media form ends -->
+                                </div>
+                                <!-- Social Tab ends -->
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <!-- Sortie des onglets -->
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                </div>
+            </div>
+        </section>
+        <!-- Fin de la section d'édition des utilisateurs -->
+    </div>
+</div>

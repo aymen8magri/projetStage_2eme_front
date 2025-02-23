@@ -1,0 +1,265 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- Page Users View Start -->
+        <section class="app-user-view">
+            <!-- User Card starts -->
+            <div class="card user-card">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Left Column: User Avatar and Info -->
+                        <div class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between">
+                            <div class="user-avatar-section">
+                                <div class="d-flex align-items-center">
+                                    <!-- User Image -->
+                                    <div class="mr-2">
+                                        <img *ngIf="societe.sigle" class="img-fluid rounded"
+                                            [src]="'http://localhost:3000/image/' + societe.sigle" sigle="104"
+                                            width="104" alt="Avatar de {{ societe.nom + ' ' + societe.prenom }}" />
+                                    </div>
+
+                                    <!-- User Name and Actions -->
+                                    <div>
+                                        <div class="user-info mb-1">
+                                            <h4 *ngIf="societe.libelle" class="mb-0 font-weight-bold">
+                                                {{ societe.libelle }}
+                                            </h4>
+                                            <span *ngIf="societe.email" class="card-text text-muted">{{ societe.email
+                                                }}</span>
+                                        </div>
+                                        <div class="d-flex">
+                                            <!-- Edit Button -->
+                                            <a *ngIf="societe._id"
+                                                [routerLink]="['/gestion-des-entities/edit-societe', societe._id]"
+                                                class="btn btn-primary" rippleEffect>
+                                                <i data-feather="edit" class="mr-1"></i>Edit
+                                            </a>
+                                            <!-- Delete Button -->
+                                            <button class="btn btn-outline-danger ml-2" (click)="deletesociete()"
+                                                rippleEffect>
+                                                <i data-feather="trash-2" class="mr-1"></i>Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Additional Info -->
+                        <div class="col-xl-6 col-lg-12 mt-3 mt-xl-0">
+                            <div class="user-info-wrapper">
+
+                                <!-- Contact -->
+                                <div *ngIf="societe.contact" class="d-flex align-items-center my-2">
+                                    <i data-feather="mail" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Contact :</span>
+                                    <span class="ml-auto">{{ societe.contact }}</span>
+                                </div>
+
+                                <!-- Raison Sociale -->
+                                <div *ngIf="societe.raison_sociale" class="d-flex align-items-center my-2">
+                                    <i data-feather="flag" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Raison Sociale :</span>
+                                    <span class="ml-auto">{{ societe.raison_sociale }}</span>
+                                </div>
+
+                                <!-- Country -->
+                                <div *ngIf="societe.pays" class="d-flex align-items-center my-2">
+                                    <i data-feather="map-pin" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Pays :</span>
+                                    <span class="ml-auto">{{ societe.pays }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="w-100" />
+
+
+                    <div class="row">
+                        <!-- Section: Général -->
+                        <div class="col-md-6 mb-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i data-feather="layers" class="mr-1"></i> Général
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Adresse -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.adresse">
+                                        <div class="user-info-title">
+                                            <i data-feather="map" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Adresse :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.adresse }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.adresse">
+
+                                    <!-- Code Postal -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.codePostal">
+                                        <div class="user-info-title">
+                                            <i data-feather="hash" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Code Postal :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.codePostal }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.codePostal">
+
+                                    <!-- Ville -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.ville">
+                                        <div class="user-info-title">
+                                            <i data-feather="home" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Ville :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.ville }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.ville">
+
+                                    <!-- Région -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.idRegion?.libelle">
+                                        <div class="user-info-title">
+                                            <i data-feather="map-pin" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Région :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.idRegion.libelle }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.idRegion?.libelle">
+
+                                    <!-- Pays -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.pays">
+                                        <div class="user-info-title">
+                                            <i data-feather="globe" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Pays :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.pays }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.pays">
+
+                                    <!-- Téléphone -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.telephone">
+                                        <div class="user-info-title">
+                                            <i data-feather="phone" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Téléphone :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.telephone }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.telephone">
+
+                                    <!-- Fax -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.fax">
+                                        <div class="user-info-title">
+                                            <i data-feather="printer" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Télécopie :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.fax }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.fax">
+
+                                    <!-- Email -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.email">
+                                        <div class="user-info-title">
+                                            <i data-feather="mail" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">E-mail :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.email }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.email">
+
+                                    <!-- Site Web -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.siteWeb">
+                                        <div class="user-info-title">
+                                            <i data-feather="link" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Site Web :</span>
+                                        </div>
+                                        <span class="ml-auto">
+                                            <a [href]="societe.siteWeb" target="_blank" rel="noopener noreferrer">{{
+                                                societe.siteWeb }}</a>
+                                        </span>
+                                    </div>
+                                    <hr *ngIf="societe.siteWeb">
+
+                                    <!-- Registre Commercial -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.registre_commerciale">
+                                        <div class="user-info-title">
+                                            <i data-feather="clipboard" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Registre Commercial :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.registre_commerciale }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.registre_commerciale">
+
+                                    <!-- Matricule Fiscal -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.matriculeFiscal">
+                                        <div class="user-info-title">
+                                            <i data-feather="file-text" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Matricule Fiscal :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.matriculeFiscal }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Section: Informations Financières -->
+                        <div class="col-md-6 mb-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i data-feather="trending-up" class="mr-1"></i> Informations Financières
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Banque -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.idBanque?.libelle">
+                                        <div class="user-info-title">
+                                            <i data-feather="briefcase" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Banque :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.idBanque.libelle }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.idBanque?.libelle">
+
+                                    <!-- Agence -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.agence">
+                                        <div class="user-info-title">
+                                            <i data-feather="map-pin" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Agence :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.agence }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.agence">
+
+                                    <!-- Compte Bancaire -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.compte">
+                                        <div class="user-info-title">
+                                            <i data-feather="credit-card" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Compte Bancaire :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.compte }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.compte">
+
+
+                                    <!-- RIB -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="societe.RIB">
+                                        <div class="user-info-title">
+                                            <i data-feather="file-text" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">RIB :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ societe.RIB }}</span>
+                                    </div>
+                                    <hr *ngIf="societe.RIB">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- User Card Ends -->
+        </section>
+        <!-- Page Users View End -->
+    </div>
+</div>

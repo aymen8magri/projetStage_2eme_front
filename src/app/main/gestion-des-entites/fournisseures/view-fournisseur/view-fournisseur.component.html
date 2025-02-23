@@ -1,0 +1,408 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- Page Users View Start -->
+        <section class="app-user-view">
+            <!-- User Card starts -->
+            <div class="card user-card">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Left Column: User Avatar and Info -->
+                        <div class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between">
+                            <div class="user-avatar-section">
+                                <div class="d-flex align-items-center">
+                                    <!-- User Image -->
+                                    <div class="mr-2">
+                                        <img *ngIf="fournisseur.image" class="img-fluid rounded"
+                                            [src]="'http://localhost:3000/image/' + fournisseur.image" height="104"
+                                            width="104" alt="Avatar de {{ fournisseur.nom + ' ' + fournisseur.prenom }}" />
+                                    </div>
+
+                                    <!-- User Name and Actions -->
+                                    <div>
+                                        <div class="user-info mb-1">
+                                            <h4 *ngIf="fournisseur.nom || fournisseur.prenom" class="mb-0 font-weight-bold">
+                                                {{ fournisseur.nom + " " + fournisseur.prenom }}
+                                            </h4>
+                                            <span *ngIf="fournisseur.email" class="card-text text-muted">{{ fournisseur.email
+                                                }}</span>
+                                        </div>
+                                        <div class="d-flex">
+                                            <!-- Edit Button -->
+                                            <a *ngIf="fournisseur._id"
+                                                [routerLink]="['/gestion-des-entities/edit-fournisseur', fournisseur._id]"
+                                                class="btn btn-primary" rippleEffect>
+                                                <i data-feather="edit" class="mr-1"></i>Edit
+                                            </a>
+                                            <!-- Delete Button -->
+                                            <button class="btn btn-outline-danger ml-2" (click)="deletefournisseur()"
+                                                rippleEffect>
+                                                <i data-feather="trash-2" class="mr-1"></i>Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Additional Info -->
+                        <div class="col-xl-6 col-lg-12 mt-3 mt-xl-0">
+                            <div class="user-info-wrapper">
+                                <!-- Client Type -->
+                                <div *ngIf="fournisseur.typeTiers" class="d-flex align-items-center my-2">
+                                    <i data-feather="info" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Type :</span>
+                                    <span class="ml-auto">{{ fournisseur.typeTiers }}</span>
+                                </div>
+
+                                <!-- Client Label -->
+                                <div *ngIf="fournisseur.libelle" class="d-flex align-items-center my-2">
+                                    <i data-feather="link" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Label :</span>
+                                    <span class="ml-auto">{{ fournisseur.libelle }}</span>
+                                </div>
+
+                                <!-- Client Contact -->
+                                <div *ngIf="fournisseur.contact" class="d-flex align-items-center my-2">
+                                    <i data-feather="mail" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Contact :</span>
+                                    <span class="ml-auto">{{ fournisseur.contact }}</span>
+                                </div>
+
+                                <!-- Client Raison Sociale -->
+                                <div *ngIf="fournisseur.raison_sociale" class="d-flex align-items-center my-2">
+                                    <i data-feather="flag" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Raison Sociale :</span>
+                                    <span class="ml-auto">{{ fournisseur.raison_sociale }}</span>
+                                </div>
+
+                                <!-- Client Country -->
+                                <div *ngIf="fournisseur.pays" class="d-flex align-items-center my-2">
+                                    <i data-feather="map-pin" class="mr-2 text-primary"></i>
+                                    <span class="font-weight-bold">Pays :</span>
+                                    <span class="ml-auto">{{ fournisseur.pays }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="w-100" />
+
+
+                    <div class="row">
+                        <!-- Section: Général -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i data-feather="layers" class="mr-1"></i> Général
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Adresse -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.adresse">
+                                        <div class="user-info-title">
+                                            <i data-feather="map" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Adresse :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.adresse }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.adresse">
+
+                                    <!-- Code Postal -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.codePostal">
+                                        <div class="user-info-title">
+                                            <i data-feather="hash" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Code Postal :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.codePostal }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.codePostal">
+
+                                    <!-- Ville -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.ville">
+                                        <div class="user-info-title">
+                                            <i data-feather="home" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Ville :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.ville }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.ville">
+
+                                    <!-- Région -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.idRegion?.libelle">
+                                        <div class="user-info-title">
+                                            <i data-feather="map-pin" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Région :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.idRegion.libelle }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.idRegion?.libelle">
+
+                                    <!-- Pays -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.pays">
+                                        <div class="user-info-title">
+                                            <i data-feather="globe" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Pays :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.pays }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.pays">
+
+                                    <!-- Téléphone -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.telephone">
+                                        <div class="user-info-title">
+                                            <i data-feather="phone" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Téléphone :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.telephone }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.telephone">
+
+                                    <!-- Fax -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.fax">
+                                        <div class="user-info-title">
+                                            <i data-feather="printer" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Télécopie :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.fax }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.fax">
+
+                                    <!-- Email -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.email">
+                                        <div class="user-info-title">
+                                            <i data-feather="mail" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">E-mail :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.email }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.email">
+
+                                    <!-- Site Web -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.siteWeb">
+                                        <div class="user-info-title">
+                                            <i data-feather="link" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Site Web :</span>
+                                        </div>
+                                        <span class="ml-auto">
+                                            <a [href]="fournisseur.siteWeb" target="_blank" rel="noopener noreferrer">{{
+                                                fournisseur.siteWeb }}</a>
+                                        </span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.siteWeb">
+
+                                    <!-- Registre Commercial -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.registre_commerciale">
+                                        <div class="user-info-title">
+                                            <i data-feather="clipboard" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Registre Commercial :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.registre_commerciale }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.registre_commerciale">
+
+                                    <!-- Matricule Fiscal -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.matriculeFiscal">
+                                        <div class="user-info-title">
+                                            <i data-feather="file-text" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Matricule Fiscal :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.matriculeFiscal }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Section: Personne Physique -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i data-feather="user" class="mr-1"></i> Personne Physique
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Nom -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.nom">
+                                        <div class="user-info-title">
+                                            <i data-feather="user" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Nom :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.nom }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.nom">
+
+                                    <!-- Prénom -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.prenom">
+                                        <div class="user-info-title">
+                                            <i data-feather="user" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Prénom :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.prenom }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.prenom">
+
+                                    <!-- CIN Num -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.CIN_Num">
+                                        <div class="user-info-title">
+                                            <i data-feather="credit-card" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">CIN Num :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.CIN_Num }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.CIN_Num">
+
+                                    <!-- CIN Date de délivrance -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.CIN_Date">
+                                        <div class="user-info-title">
+                                            <i data-feather="calendar" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">CIN Date de délivrance :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.CIN_Date | date: 'dd/MM/yyyy' }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.CIN_Date">
+
+                                    <!-- Adresse Permanente -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.adresse_Permanente">
+                                        <div class="user-info-title">
+                                            <i data-feather="home" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Adresse Permanente :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.adresse_Permanente }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.adresse_Permanente">
+
+                                    <!-- Passeport Num -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.passport_Num">
+                                        <div class="user-info-title">
+                                            <i data-feather="file-text" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Passeport Num :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.passport_Num }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.passport_Num">
+
+                                    <!-- Passeport Date de délivrance -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.passport_Date">
+                                        <div class="user-info-title">
+                                            <i data-feather="calendar" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Passeport Date de délivrance :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.passport_Date | date: 'dd/MM/yyyy' }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.passport_Date">
+
+                                    <!-- Permis Num -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.permis_Num">
+                                        <div class="user-info-title">
+                                            <i data-feather="clipboard" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Permis Num :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.permis_Num }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.permis_Num">
+
+                                    <!-- Permis Date de délivrance -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.date_obtention_permis">
+                                        <div class="user-info-title">
+                                            <i data-feather="calendar" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Permis Date de délivrance :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.date_obtention_permis | date: 'dd/MM/yyyy'
+                                            }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Section: Informations Financières -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">
+                                        <i data-feather="trending-up" class="mr-1"></i> Informations Financières
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Banque -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.idBanque?.libelle">
+                                        <div class="user-info-title">
+                                            <i data-feather="briefcase" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Banque :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.idBanque.libelle }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.idBanque?.libelle">
+
+                                    <!-- Agence -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.agence">
+                                        <div class="user-info-title">
+                                            <i data-feather="map-pin" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Agence :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.agence }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.agence">
+
+                                    <!-- Compte Bancaire -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.compte">
+                                        <div class="user-info-title">
+                                            <i data-feather="credit-card" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Compte Bancaire :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.compte }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.compte">
+
+                                    <!-- Crédit Max -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.creditMax">
+                                        <div class="user-info-title">
+                                            <i data-feather="dollar-sign" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Crédit Max :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.creditMax }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.creditMax">
+
+                                    <!-- RIB -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.RIB">
+                                        <div class="user-info-title">
+                                            <i data-feather="file-text" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">RIB :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.RIB }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.RIB">
+
+                                    <!-- Solde -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.solde">
+                                        <div class="user-info-title">
+                                            <i data-feather="trending-up" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Solde :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.solde }}</span>
+                                    </div>
+                                    <hr *ngIf="fournisseur.solde">
+
+                                    <!-- Statut du Compte -->
+                                    <div class="d-flex flex-wrap my-50" *ngIf="fournisseur.statutCompte">
+                                        <div class="user-info-title">
+                                            <i data-feather="check-circle" class="mr-1 text-primary"></i>
+                                            <span class="font-weight-bold">Statut du Compte :</span>
+                                        </div>
+                                        <span class="ml-auto">{{ fournisseur.statutCompte }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- User Card Ends -->
+        </section>
+        <!-- Page Users View End -->
+    </div>
+</div>

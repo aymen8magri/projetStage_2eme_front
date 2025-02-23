@@ -1,0 +1,43 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+
+        <!-- Début de la section d'édition des utilisateurs -->
+        <section class="app-user-edit">
+            <!--partie obligatoire-->
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="regionForm" (ngSubmit)="addRegion()" class="form-validate">
+
+                        <div class="row">
+                            <!-- Section pour le champ "Libellé" -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="libelle">Libellé du Région</label>
+                                    <input type="text" id="libelle" class="form-control" placeholder="Entrez le libellé du Région"
+                                        formControlName="libelle"
+                                        [class.is-invalid]="regionForm.controls.libelle.invalid && (regionForm.controls.libelle.touched || submitted)"
+                                        name="libelle" />
+                                    <!-- Messages d'erreur -->
+                                    <small class="text-danger"
+                                        *ngIf="(regionForm.controls.libelle.touched || submitted) && regionForm.controls.libelle.hasError('required')">
+                                        Ce champ est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary mr-1 mt-2" rippleEffect>
+                                        Ajouter une Région
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--fin de la partie obligatoire-->
+        </section>
+        <!-- Fin de la section d'édition des utilisateurs -->
+    </div>
+</div>

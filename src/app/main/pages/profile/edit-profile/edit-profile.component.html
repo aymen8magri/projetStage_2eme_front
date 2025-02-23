@@ -1,0 +1,183 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- content-header component -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <!-- account setting page -->
+        <section id="page-account-settings">
+            <div class="row nav-vertical d-flex">
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <ul ngbNav #navVertical="ngbNav" class="nav nav-pills flex-column nav-left">
+
+                        <!--General-->
+                        <li class="nav-item" ngbNavItem>
+                            <!-- Lien de navigation du tab "General" -->
+                            <a ngbNavLink class="nav-link d-flex py-75" id="account-pill-general" data-toggle="pill"
+                                href="#account-vertical-general" aria-expanded="true">
+                                <i data-feather="user" class="font-medium-3 mr-1"></i>
+                                <span class="font-weight-bold">General</span>
+                            </a>
+
+                            <!-- Contenu de l'onglet "General" -->
+                            <ng-template ngbNavContent>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <!-- Section: Media pour l'image du profil et les boutons d'upload -->
+                                        <div class="media">
+                                            <!-- Image de profil -->
+                                            <a href="javascript:void(0);" class="mr-25">
+                                                <img [src]="avatarImage || 'http://localhost:3000/image/' + user.image"
+                                                    class="rounded mr-50" alt="profile image" height="76" width="80" />
+                                            </a>
+
+                                            <!-- Boutons d'upload et de réinitialisation de l'image -->
+                                            <div class="media-body mt-75 ml-1">
+                                                <button (click)="file.click()" for="account-upload"
+                                                    class="btn btn-sm btn-primary mb-75 mr-75" rippleEffect>
+                                                    Upload
+                                                </button>
+                                                <input type="file" #file id="account-upload" hidden accept="image/*"
+                                                    (change)="uploadImage($event)" />
+
+                                                <button class="btn btn-sm btn-outline-secondary mb-75" rippleEffect
+                                                    (click)="resetImage()">
+                                                    Reset
+                                                </button>
+                                                <p>Allowed JPG, GIF or PNG. Max size of 800kB</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Formulaire pour modifier les informations de l'utilisateur -->
+                                        <form [formGroup]="editForm" (ngSubmit)="saveProfile()" class="validate-form">
+                                            <div class="row">
+                                                <!-- Champ: First Name -->
+                                                <div class="col-12 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="account-firstname">First Name</label>
+                                                        <input type="text" class="form-control"
+                                                            [class.is-invalid]="f.firstname.invalid && f.firstname.touched"
+                                                            id="account-firstname" name="firstname"
+                                                            placeholder="First Name" formControlName="firstname" />
+                                                        <!-- Messages d'erreur pour le champ "First Name" -->
+                                                        <div *ngIf="editForm.get('firstname').touched && editForm.get('firstname').invalid"
+                                                            class="text-danger">
+                                                            <small
+                                                                *ngIf="editForm.get('firstname').hasError('required')">First
+                                                                Name is required.</small>
+                                                            <small
+                                                                *ngIf="editForm.get('firstname').hasError('minlength')">First
+                                                                Name must be at least 2 characters.</small>
+                                                            <small
+                                                                *ngIf="editForm.get('firstname').hasError('maxlength')">First
+                                                                Name cannot be more than 50 characters.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Champ: Last Name -->
+                                                <div class="col-12 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="account-lastname">Last Name</label>
+                                                        <input type="text" class="form-control"
+                                                            [class.is-invalid]="f.lastname.invalid && f.lastname.touched"
+                                                            id="account-lastname" name="lastname"
+                                                            placeholder="Last Name" formControlName="lastname" />
+                                                        <!-- Messages d'erreur pour le champ "Last Name" -->
+                                                        <div *ngIf="editForm.get('lastname').touched && editForm.get('lastname').invalid"
+                                                            class="text-danger">
+                                                            <small
+                                                                *ngIf="editForm.get('lastname').hasError('required')">Last
+                                                                Name is required.</small>
+                                                            <small
+                                                                *ngIf="editForm.get('lastname').hasError('minlength')">Last
+                                                                Name must be at least 2 characters.</small>
+                                                            <small
+                                                                *ngIf="editForm.get('lastname').hasError('maxlength')">Last
+                                                                Name cannot be more than 50 characters.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Champ: Email -->
+                                                <div class="col-12 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="account-e-mail">E-mail</label>
+                                                        <input type="email" class="form-control"
+                                                            [class.is-invalid]="f.email.invalid && f.email.touched"
+                                                            id="account-e-mail" name="email" placeholder="Email"
+                                                            formControlName="email" />
+                                                        <!-- Messages d'erreur pour le champ "Email" -->
+                                                        <div *ngIf="editForm.get('email').touched && editForm.get('email').invalid"
+                                                            class="text-danger">
+                                                            <small
+                                                                *ngIf="editForm.get('email').hasError('required')">Email
+                                                                is required.</small>
+                                                            <small
+                                                                *ngIf="editForm.get('email').hasError('email')">Invalid
+                                                                email format.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Champ: New Password -->
+                                                <div class="col-12 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="account-new-password">New Password</label>
+                                                        <div class="input-group form-password-toggle input-group-merge">
+                                                            <input [type]="passwordTextTypeNew ? 'text' : 'password'"
+                                                                id="account-new-password" name="new-password"
+                                                                class="form-control"
+                                                                [class.is-invalid]="f.newPassword.invalid && f.newPassword.touched"
+                                                                placeholder="New Password"
+                                                                formControlName="newPassword" />
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text cursor-pointer">
+                                                                    <i class="feather font-small-4" [ngClass]="{
+                                                  'icon-eye-off': passwordTextTypeNew,
+                                                  'icon-eye': !passwordTextTypeNew
+                                                }" (click)="togglePasswordTextTypeNew()"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Messages d'erreur pour le champ "New Password" -->
+                                                        <div *ngIf="editForm.get('newPassword').touched && editForm.get('newPassword').invalid"
+                                                            class="text-danger">
+                                                            <small
+                                                                *ngIf="editForm.get('newPassword').hasError('minlength')">Password
+                                                                must be at least 6 characters.</small>
+                                                            <small
+                                                                *ngIf="editForm.get('newPassword').hasError('maxlength')">Password
+                                                                cannot be more than 20 characters.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Boutons pour enregistrer ou annuler -->
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-primary mr-1 mt-1" rippleEffect
+                                                        [disabled]="editForm.invalid">
+                                                        Save changes
+                                                    </button>
+                                                    <button type="button" (click)="cancel()"
+                                                        class="btn btn-outline-secondary mt-1" rippleEffect>
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <!--Fin General-->
+
+                    </ul>
+                </div>
+                <div [ngbNavOutlet]="navVertical" class="col-12 col-md-9"></div>
+            </div>
+        </section>
+        <!--/ account setting page -->
+    </div>
+</div>

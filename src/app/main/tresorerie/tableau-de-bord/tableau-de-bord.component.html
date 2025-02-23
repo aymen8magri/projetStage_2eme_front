@@ -1,0 +1,665 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!--navigation section-->
+        <section>
+            <div class="card">
+                <div class="card-body">
+                    <!-- Onglets de navigation -->
+                    <ul ngbNav #nav="ngbNav" class="nav nav-pills">
+                        <!-- Onglet Général -->
+                        <li ngbNavItem>
+                            <a ngbNavLink class="d-flex align-items-center">
+                                <i data-feather="globe" class="mr-sm-50"></i>
+                                <span class="d-none d-sm-block">Général</span>
+                            </a>
+
+                            <!-- Contenu de l'onglet "Général" -->
+                            <ng-template ngbNavContent>
+                                <div class="container mt-4">
+
+                                    <!-- Filters Section -->
+                                    <div class="card p-3 mb-4 shadow-lg border-primary">
+                                        <h4>🔍 Filtres</h4>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                <label>Année:</label>
+                                                <select class="form-control" [(ngModel)]="selectedAnnee"
+                                                    (change)="applyFilters()">
+                                                    <option value="" selected>Select Année</option>
+                                                    <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                <label>Mois:</label>
+                                                <select class="form-control" [(ngModel)]="selectedMois"
+                                                    (change)="applyFilters()">
+                                                    <option value="" selected>Select Mois</option>
+                                                    <option value="01">Janvier</option>
+                                                    <option value="02">Février</option>
+                                                    <option value="03">Mars</option>
+                                                    <option value="04">Avril</option>
+                                                    <option value="05">Mai</option>
+                                                    <option value="06">Juin</option>
+                                                    <option value="07">Juillet</option>
+                                                    <option value="08">Août</option>
+                                                    <option value="09">Septembre</option>
+                                                    <option value="10">Octobre</option>
+                                                    <option value="11">Novembre</option>
+                                                    <option value="12">Décembre</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                <label>Banque:</label>
+                                                <select class="form-control" [(ngModel)]="selectedBanque"
+                                                    (change)="applyFilters()">
+                                                    <option value="" selected>Select Banque</option>
+                                                    <option *ngFor="let b of listBanques" [value]="b._id">{{ b.libelle
+                                                        }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Reset Filters Button -->
+                                        <div class="d-flex justify-content-end mt-1">
+                                            <button class="btn btn-secondary" (click)="resetFilters()">Réinitialiser les
+                                                filtres</button>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Encaissements Table -->
+                                    <div class="card shadow-lg p-3 mb-4 border-success">
+                                        <h4 class="text-success">💰 Encaissements</h4>
+                                        <!-- Total Encaissements -->
+                                        <div class="d-flex justify-content-end">
+                                            <div class="alert alert-success p-1 fw-bold">
+                                                Total Encaissements : {{ getTotalEncaissements() |
+                                                currency:'TND':'symbol':'1.3-3' }}
+                                            </div>
+                                        </div>
+                                        <table class="table table-hover table-responsive d-block d-md-table">
+                                            <thead class="table-success">
+                                                <tr>
+                                                    <th>Echéance</th>
+                                                    <th>Date Reglement</th>
+                                                    <th>Client</th>
+                                                    <th>Montant</th>
+                                                    <th>Nature</th>
+                                                    <th>Impayé</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="filteredEncaissements.length > 0; else noResults">
+                                                <tr *ngFor="let enc of filteredEncaissements; index as i">
+                                                    <td>{{ enc.echeance | date: 'dd/MM/yyyy' }}</td>
+                                                    <td>{{ enc.dateRegle | date: 'dd/MM/yyyy' }}</td>
+                                                    <td>{{ enc.idClient.nom + " " + enc.idClient.prenom }}</td>
+                                                    <td>{{ enc.montant | currency:'TND':'symbol':'1.3-3' }}</td>
+                                                    <td>{{ enc.regle }}</td>
+                                                    <td class="d-flex justify-content-center">
+                                                        <div
+                                                            class="custom-control custom-radio custom-control-danger mx-2">
+                                                            <input type="radio" class="custom-control-input"
+                                                                [id]="'encPrevu' + i" [name]="'encImpaye' + i"
+                                                                [(ngModel)]="selectedImpayeClient[i]"
+                                                                (change)="updateImpayeValueClient(i, enc.montant)"
+                                                                [value]="'prevu'" />
+                                                            <label class="custom-control-label"
+                                                                [for]="'encPrevu' + i">Prévu</label>
+                                                        </div>
+
+                                                        <div class="custom-control custom-radio custom-control-success">
+                                                            <input type="radio" class="custom-control-input"
+                                                                [id]="'encConf' + i" [name]="'encImpaye' + i"
+                                                                [(ngModel)]="selectedImpayeClient[i]"
+                                                                (change)="updateImpayeValueClient(i, enc.montant)"
+                                                                [value]="'confirme'" />
+                                                            <label class="custom-control-label"
+                                                                [for]="'encConf' + i">Confirmé</label>
+                                                        </div>
+                                                    </td>
+
+
+
+
+
+                                                    <td>
+                                                        <!-- Dropdown for Actions -->
+                                                        <div ngbDropdown container="body">
+                                                            <button ngbDropdownToggle type="button"
+                                                                class="btn icon-btn btn-sm hide-arrow" rippleEffect>
+                                                                <span [data-feather]="'more-vertical'"
+                                                                    class="cursor-pointer"></span>
+                                                            </button>
+                                                            <div ngbDropdownMenu>
+                                                                <a [routerLink]="['/reglement/edit-payement-client', enc._id]"
+                                                                    ngbDropdownItem>
+                                                                    <span [data-feather]="'edit'" [size]="16"
+                                                                        class="mr-50"></span> Edit
+                                                                </a>
+                                                                <a ngbDropdownItem
+                                                                    (click)="onDeletePayementClient(enc._id)">
+                                                                    <span [data-feather]="'trash'" [size]="16"
+                                                                        class="mr-50"></span> Delete
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <!-- Décaissements Table -->
+                                    <div class="card shadow-lg p-3 mb-4 border-danger">
+                                        <h4 class="text-danger">📉 Décaissements</h4>
+                                        <!-- Total Décaissements -->
+                                        <div class="d-flex justify-content-end">
+                                            <div class="alert alert-danger p-1 fw-bold">
+                                                Total Décaissements : {{ getTotalDecaissements() |
+                                                currency:'TND':'symbol':'1.3-3' }}
+                                            </div>
+                                        </div>
+                                        <table class="table table-hover table-responsive d-block d-md-table">
+                                            <thead class="table-danger">
+                                                <tr>
+                                                    <th>Echéance</th>
+                                                    <th>Date</th>
+                                                    <th>Fournisseur</th>
+                                                    <th>Montant</th>
+                                                    <th>Nature</th>
+                                                    <th>Impayé</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="filteredDecaissements.length > 0; else noResults">
+                                                <tr *ngFor="let dec of filteredDecaissements; index as j">
+                                                    <td>{{ dec.echeance | date: 'dd/MM/yyyy' }}</td>
+                                                    <td>{{ dec.dateRegle | date: 'dd/MM/yyyy' }}</td>
+                                                    <td>{{ dec.idFournisseur.nom + " " + dec.idFournisseur.prenom }}
+                                                    </td>
+                                                    <td>{{ dec.montant | currency:'TND':'symbol':'1.3-3' }}</td>
+                                                    <td>{{ dec.regle }}</td>
+                                                    <td class="d-flex justify-content-center">
+                                                        <div
+                                                            class="custom-control custom-radio custom-control-danger mx-2">
+                                                            <input type="radio" class="custom-control-input"
+                                                                [id]="'decPrevu' + j" [name]="'decImpaye' + j"
+                                                                [(ngModel)]="selectedImpayeFournisseur[j]"
+                                                                (change)="updateFournisseurImpayeValue(j, dec.montant)"
+                                                                [value]="'prevu'" />
+                                                            <label class="custom-control-label"
+                                                                [for]="'decPrevu' + j">Prévu</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio custom-control-success">
+                                                            <input type="radio" class="custom-control-input"
+                                                                [id]="'decConf' + j" [name]="'decImpaye' + j"
+                                                                [(ngModel)]="selectedImpayeFournisseur[j]"
+                                                                (change)="updateFournisseurImpayeValue(j, dec.montant)"
+                                                                [value]="'confirme'" />
+                                                            <label class="custom-control-label"
+                                                                [for]="'decConf' + j">Confirmé</label>
+                                                        </div>
+                                                    </td>
+
+
+                                                    <td>
+                                                        <!-- Dropdown for Actions -->
+                                                        <div ngbDropdown container="body">
+                                                            <button ngbDropdownToggle type="button"
+                                                                class="btn icon-btn btn-sm hide-arrow" rippleEffect>
+                                                                <span [data-feather]="'more-vertical'"
+                                                                    class="cursor-pointer"></span>
+                                                            </button>
+                                                            <div ngbDropdownMenu>
+                                                                <a [routerLink]="['/reglement/edit-payement-fournisseur', dec._id]"
+                                                                    ngbDropdownItem>
+                                                                    <span [data-feather]="'edit'" [size]="16"
+                                                                        class="mr-50"></span> Edit
+                                                                </a>
+                                                                <a ngbDropdownItem
+                                                                    (click)="onDeletePayementClient(dec._id)">
+                                                                    <span [data-feather]="'trash'" [size]="16"
+                                                                        class="mr-50"></span> Delete
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </ng-template>
+                        </li>
+
+                        <!-- Supplementaire -->
+                        <li ngbNavItem>
+                            <a ngbNavLink class="d-flex align-items-center">
+                                <i data-feather="plus-square" class="mr-sm-50"></i>
+                                <span class="d-none d-sm-block">Supplémentaire</span>
+                            </a>
+
+                            <ng-template ngbNavContent>
+                                <div class="container mt-4">
+                                    <!-- Tableau Encaissement  Supplémentaire-->
+                                    <div class="card shadow-lg p-3 mb-4 border-success">
+                                        <h4 class="text-success">💰 Encaissements Supplémentaires</h4>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <!-- Bouton d'ajout -->
+                                            <button class="btn btn-primary" (click)="addEncaissementRow()">➕ Ajouter
+                                                Linge</button>
+
+                                            <!-- Affichage du total -->
+                                            <div class="alert alert-success p-2 fw-bold mb-0">
+                                                Total Encaissements : <span class="fs-5">{{
+                                                    getTotalEncaissementsSupplementaire() | number:'1.2-2' }} TND</span>
+                                            </div>
+                                        </div>
+
+                                        <table
+                                            class="table table-bordered table-hover table-responsive d-block d-md-table">
+                                            <thead class="table-success">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Désignation</th>
+                                                    <th>Montant</th>
+                                                    <th>Ajouter</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody
+                                                *ngIf="filteredSupplementairesEncaissement.length > 0; else noResults">
+                                                <tr
+                                                    *ngFor="let enc of filteredSupplementairesEncaissement; let i = index">
+                                                    <td><input type="date" class="form-control"
+                                                            [(ngModel)]="filteredSupplementairesEncaissement[i].dateSupp">
+                                                    </td>
+                                                    <td><input type="text" class="form-control"
+                                                            [(ngModel)]="filteredSupplementairesEncaissement[i].designation">
+                                                    </td>
+                                                    <td><input type="text" class="form-control"
+                                                            [(ngModel)]="filteredSupplementairesEncaissement[i].montant">
+                                                    </td>
+                                                    <td>
+                                                        <button (click)="addSupplementaireEncaissement(i)"
+                                                            class="btn btn-primary">
+                                                            <i data-feather="save" class="text-white"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+
+                                    <!-- Tableau Décaissement Supplémentaire-->
+                                    <div class="card shadow-lg p-3 mb-4 border-danger">
+                                        <h4 class="text-danger">📉 Décaissements Supplémentaire</h4>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <!-- Bouton d'ajout -->
+                                            <button class="btn btn-primary" (click)="addDecaissementRow()">➕ Ajouter
+                                                Linge</button>
+
+                                            <!-- Affichage du total -->
+                                            <div class="alert alert-danger p-2 fw-bold mb-0">
+                                                Total Décaissements : <span class="fs-5">{{
+                                                    getTotalDecaissementsSupplementaire()
+                                                    | number:'1.2-2' }} TND</span>
+                                            </div>
+                                        </div>
+
+                                        <table
+                                            class="table table-bordered table-hover table-responsive d-block d-md-table">
+                                            <thead class="table-danger">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Désignation</th>
+                                                    <th>Montant</th>
+                                                    <th>Ajouter</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody
+                                                *ngIf="filteredSupplementairesDecaissement.length > 0; else noResults">
+                                                <tr
+                                                    *ngFor="let dec of filteredSupplementairesDecaissement; let i = index">
+                                                    <td><input type="date" class="form-control"
+                                                            [(ngModel)]="filteredSupplementairesDecaissement[i].dateSupp">
+                                                    </td>
+                                                    <td><input type="text" class="form-control"
+                                                            [(ngModel)]="filteredSupplementairesDecaissement[i].designation">
+                                                    </td>
+                                                    <td><input type="text" class="form-control"
+                                                            [(ngModel)]="filteredSupplementairesDecaissement[i].montant">
+                                                    </td>
+                                                    <td>
+                                                        <button (click)="addSupplementaireDecaissement(i)"
+                                                            class="btn btn-primary">
+                                                            <i data-feather="save" class="text-white"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </ng-template>
+                        </li>
+
+                        <!--encaissement escompter-->
+                        <li ngbNavItem>
+                            <a ngbNavLink class="d-flex align-items-center">
+                                <i data-feather="clipboard" class="mr-sm-50"></i>
+                                <span class="d-none d-sm-block">Encaissement Escompter</span>
+                            </a>
+
+                            <ng-template ngbNavContent>
+                                <!-- Encaissements Escompter Table -->
+                                <div class="card shadow-lg p-3 mb-4 ">
+                                    <h4 class="text-success">💰 Encaissements Escompter</h4>
+                                    <!-- Total Encaissements Escompter -->
+                                    <div class="d-flex justify-content-end">
+                                        <div class="alert alert-success p-1 fw-bold">
+                                            Total Encaissements Escompter : {{ getTotalEncaissementsEscompter() |
+                                            currency:'TND':'symbol':'1.3-3' }}
+                                        </div>
+                                    </div>
+                                    <table class="table table-hover table-responsive d-block d-md-table">
+                                        <thead class="table-success">
+                                            <tr>
+                                                <th>Echéance</th>
+                                                <th>Date Reglement</th>
+                                                <th>Client</th>
+                                                <th>Montant</th>
+                                                <th>Nature</th>
+                                                <th>Impayé</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="filtredEncaissementsEscompter.length > 0; else noResults">
+                                            <tr *ngFor="let enc of filtredEncaissementsEscompter; index as i">
+                                                <td>{{ enc.echeance | date: 'dd/MM/yyyy' }}</td>
+                                                <td>{{ enc.dateRegle | date: 'dd/MM/yyyy' }}</td>
+                                                <td>{{ enc.idClient.nom + " " + enc.idClient.prenom }}</td>
+                                                <td>{{ enc.montant | currency:'TND':'symbol':'1.3-3' }}</td>
+                                                <td>{{ enc.regle }}</td>
+                                                <td class="d-flex justify-content-center">
+                                                    <div class="custom-control custom-radio custom-control-danger mx-2">
+                                                        <input type="radio" class="custom-control-input"
+                                                            [id]="'encEscompPrevu' + i" [name]="'encEscomp' + i"
+                                                            [(ngModel)]="selectedEncEscompter[i]"
+                                                            (change)="updateEncEscompterValue(i, enc.montant)"
+                                                            [value]="'prevu'" />
+                                                        <label class="custom-control-label"
+                                                            [for]="'encEscompPrevu' + i">Prévu</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-success">
+                                                        <input type="radio" class="custom-control-input"
+                                                            [id]="'encEscompConf' + i" [name]="'encEscomp' + i"
+                                                            [(ngModel)]="selectedEncEscompter[i]"
+                                                            (change)="updateEncEscompterValue(i, enc.montant)"
+                                                            [value]="'confirme'" />
+                                                        <label class="custom-control-label"
+                                                            [for]="'encEscompConf' + i">Confirmé</label>
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <!-- Dropdown for Actions -->
+                                                    <div ngbDropdown container="body">
+                                                        <button ngbDropdownToggle type="button"
+                                                            class="btn icon-btn btn-sm hide-arrow" rippleEffect>
+                                                            <span [data-feather]="'more-vertical'"
+                                                                class="cursor-pointer"></span>
+                                                        </button>
+                                                        <div ngbDropdownMenu>
+                                                            <a [routerLink]="['/reglement/edit-payement-client', enc._id]"
+                                                                ngbDropdownItem>
+                                                                <span [data-feather]="'edit'" [size]="16"
+                                                                    class="mr-50"></span> Edit
+                                                            </a>
+                                                            <a ngbDropdownItem
+                                                                (click)="onDeletePayementClient(enc._id)">
+                                                                <span [data-feather]="'trash'" [size]="16"
+                                                                    class="mr-50"></span> Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </ng-template>
+                        </li>
+
+                        <!--observation-->
+                        <li ngbNavItem>
+                            <a ngbNavLink class="d-flex align-items-center">
+                                <i data-feather="eye" class="mr-sm-50"></i>
+                                <span class="d-none d-sm-block">Observation</span>
+                            </a>
+                            <ng-template ngbNavContent>
+                                <form [formGroup]="tresorerieForm">
+                                <div class="container mt-3">
+                                    <!-- Optionnel : tu peux définir des modules de configuration pour l'éditeur -->
+                                    <quill-editor formControlName="observation" [modules]="editorModules"
+                                        [placeholder]="'Écris ton observation ici...'" [styles]="{height: '250px'}" >
+                                    </quill-editor>
+                                </div>
+                                </form>
+
+                            </ng-template>
+                        </li>
+
+
+                        <!--Résumé du Mois-->
+                        <li ngbNavItem>
+                            <a ngbNavLink class="d-flex align-items-center">
+                                <i data-feather="bar-chart-2" class="me-2"></i>
+                                <span class="d-none d-sm-block fw-bold">Résumé du Mois</span>
+                            </a>
+
+                            <ng-template ngbNavContent>
+                                <section class="totalSection container mt-4">
+                                    <form [formGroup]="tresorerieForm">
+                                        <div class="row g-4">
+
+                                            <!-- Card 1: Mouvement du Mois -->
+                                            <div class="col-md-6">
+                                                <div class="card shadow-sm border-0 rounded-3">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title text-primary fw-bold">📊 Mouvement du Mois
+                                                        </h5>
+                                                        <div class="row mt-3">
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Encaissement</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="encaissement" placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Décaissement</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="decaissement" placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Escompte</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="escompte" placeholder="0.00 €">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card 2: Impayés -->
+                                            <div class="col-md-6">
+                                                <div class="card shadow-sm border-0 rounded-3">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title text-warning fw-bold">⚠️ Impayés Prévues
+                                                        </h5>
+                                                        <div class="row mt-3">
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Clients Prévu</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="impayesPrevusClients"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Fournisseurs Prévu</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="impayesPrevusFournisseurs"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Escompte Prévu</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="impayesPrevusEscompte"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card 3: Impayés Confirmés -->
+                                            <div class="col-md-6">
+                                                <div class="card shadow-sm border-0 rounded-3">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title text-danger fw-bold">❌ Impayés Confirmés
+                                                        </h5>
+                                                        <div class="row mt-3">
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Clients Conf.</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="impayesConfirmesClients"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Fournisseurs Conf.</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="impayesConfirmesFournisseurs"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Escompte Conf.</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="impayesConfirmesEscompte"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- ✅ NEW: Card 4 - Mouvement Supplémentaire -->
+                                            <div class="col-md-6">
+                                                <div class="card shadow-sm border-0 rounded-3">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title text-info fw-bold">🔄 Mouvement
+                                                            Supplémentaire</h5>
+                                                        <div class="row mt-3">
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Encaissement
+                                                                    Supplémentaire</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="encaissementSupp"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Décaissement
+                                                                    Supplémentaire</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="decaissementSupp"
+                                                                    placeholder="0.00 €">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Montant
+                                                                    Supplémentaire</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="montantSupp" placeholder="0.00 €">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card 4: Solde et Actions -->
+                                            <div class="col-md-6">
+                                                <div class="card shadow-lg border-0 rounded-3">
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title text-success fw-bold">💰 Solde</h5>
+                                                        <div class="row mt-3">
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Solde Prévu</label>
+                                                                <input type="text" class="form-control text-center"
+                                                                    formControlName="soldePrevus" readonly>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Solde Final</label>
+                                                                <input type="text"
+                                                                    class="form-control text-center"
+                                                                    formControlName="soldeFinal" readonly>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label class="fw-semibold">Tresorerie du Mois</label>
+                                                                <input type="text"
+                                                                    class="form-control text-center"
+                                                                    formControlName="tresorerie_de_mois" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex justify-content-center gap-3 mt-4">
+                                                            <button type="submit"
+                                                                class="btn btn-success px-4 rounded-pill shadow-sm"
+                                                                (click)="valider()">
+                                                                <i class="bi bi-check-circle"></i> Valider
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </section>
+                            </ng-template>
+                        </li>
+
+                        <!-- Section pour le champ "solde initial" -->
+                        <div class="d-flex justify-content-end" style="margin-left: 50px;">
+                            <div class="alert alert-info p-1 fw-bold">
+                                Solde Initial : {{ soldeInitial | number:'1.2-2' }} TND
+                            </div>
+                        </div>
+
+                    </ul>
+
+                    <!--No result found section-->
+                    <ng-template #noResults>
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                <ngb-alert type="warning" class="mb-2 mt-2 w-50 mx-auto p-2 ">
+                                    <div class="alert-heading">Aucun résultat trouvé</div>
+                                    <div class="alert-body mt-1 ">
+                                        Veuillez modifier les filtres pour afficher Résultat.
+                                    </div>
+                                </ngb-alert>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Sortie des onglets -->
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

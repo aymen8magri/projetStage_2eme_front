@@ -1,0 +1,141 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+
+    <!-- Content Header -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- Welcome Section -->
+    <section id="Welcome-Section">
+      <div class="row">
+        <div class="col-12">
+          <div class="card knowledge-base-bg text-center"
+            style="background-image: url('../../../assets/images/pages/cover-welcom.png'); height: 420px;">
+            <div class="card-body">
+              <h2 class="text-primary">Bienvenue sur votre outil de gestion de trésorerie 💰</h2>
+              <p class="card-text mb-2">
+                <span>Optimisez vos finances avec notre solution intuitive.</span>
+                <br>
+                <span class="font-weight-bolder">
+                  Accédez à des fonctionnalités puissantes pour suivre vos <span class="text-success">revenus</span>,
+                  gérer vos <span class="text-danger">dépenses</span> et analyser vos <span class="text-primary">flux de
+                    trésorerie</span>.
+                </span>
+              </p>
+    
+              <!-- Partie si l'utilisateur n'est PAS connecté -->
+              <div class="mt-3" *ngIf="!(userService.isLoggedIn()); else loggedInBlock">
+                <h4 class="text-dark">Prêt à prendre le contrôle de votre trésorerie ?</h4>
+                <p class="card-text">Commencez dès aujourd'hui en créant un compte ou en vous connectant.</p>
+                <hr>
+                <div class="d-flex justify-content-center mt-2">
+                  <a routerLink="/pages/authentication/registre" class="btn btn-primary mx-2">Créer un compte</a>
+                  <a routerLink="/pages/authentication/login-v2" class="btn btn-outline-primary mx-2">Se connecter</a>
+                </div>
+              </div>
+    
+              <!-- Partie pour les utilisateurs connectés -->
+              <ng-template #loggedInBlock>
+                <div class="mt-3">
+                  <h4 class="text-dark">Bienvenue, <span class="text-primary">{{ user.firstname + " " + user.lastname }}</span> ! 👋</h4>
+                  <p class="card-text">
+                    Ravi de vous revoir ! Consultez votre tableau de bord pour un aperçu rapide de votre trésorerie.
+                  </p>
+                  <hr>
+                  <div class="d-flex justify-content-center mt-2">
+                    <a routerLink="/tresorerie/tableau-de-bord" class="btn btn-success mx-2">Accéder au tableau de bord</a>
+                    <a routerLink="/tresorerie/situation-du-mois" class="btn btn-outline-success mx-2">Voir Situation Du Mois</a>
+                  </div>
+              </div>
+              </ng-template>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- Features Section -->
+    <section id="knowledge-base-content">
+      <div class="row kb-search-content-info match-height">
+
+        <div class="col-md-4 col-sm-6 col-12 kb-search-content">
+          <div class="card">
+            <img src="../../../assets/images/illustration/email.svg" class="card-img-top" alt="knowledge-base-image" />
+            <div class="card-body text-center">
+              <h4>Suivi des Revenus</h4>
+              <p class="text-body mt-1 mb-0">Gardez un œil sur toutes vos sources de revenus grâce à des rapports
+                détaillés.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12 kb-search-content">
+          <div class="card">
+            <img src="../../../assets/images/illustration/demand.svg" class="card-img-top" alt="knowledge-base-image" />
+            <div class="card-body text-center">
+              <h4>Gestion des Dépenses</h4>
+              <p class="text-body mt-1 mb-0">Catégorisez et suivez vos dépenses pour une meilleure planification
+                budgétaire.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-12 kb-search-content">
+          <div class="card">
+            <img src="../../../assets/images/illustration/api.svg" class="card-img-top" alt="knowledge-base-image" />
+            <div class="card-body text-center">
+              <h4>Analyses Avancées</h4>
+              <p class="text-body mt-1 mb-0">Utilisez des tableaux et graphiques interactifs pour analyser vos flux de
+                trésorerie.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accordion Section -->
+   <!-- <section id="collapsible" class="mt-4"> -->
+      <div class="row">
+        <!-- Accordion -->
+        <!-- <div class="col-md-7 collapse-margin">
+          <ngb-accordion [closeOthers]="true" activeIds="accordion-1">
+            <ngb-panel id="accordion-1">
+              <ng-template ngbPanelTitle>
+                <span class="lead collapse-title">Accordion Item 1</span>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                Contenu détaillé pour l'élément 1.
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel id="accordion-2">
+              <ng-template ngbPanelTitle>
+                <span class="lead collapse-title">Accordion Item 2</span>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                Contenu détaillé pour l'élément 2.
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel id="accordion-3">
+              <ng-template ngbPanelTitle>
+                <span class="lead collapse-title">Accordion Item 3</span>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                Contenu détaillé pour l'élément 3.
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel id="accordion-4" [disabled]="true">
+              <ng-template ngbPanelTitle>
+                <span class="lead collapse-title">Accordion Item 4 (Disabled)</span>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                Cet élément est désactivé.
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </div>
+      </div> -->
+   <!-- </section> --> 
+
+  </div>
+</div>

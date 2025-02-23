@@ -1,0 +1,142 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+        <!-- User List Section -->
+        <section class="users-list-wrapper">
+
+            <!-- Filter Card -->
+            <div class="card">
+                <h5 class="card-header">Search Filter</h5>
+                <div class="card-body">
+                    <div class="users-list-filter">
+                        <form>
+                            <div class="row align-items-start">
+                                <!-- Left Column: Select Client -->
+                                <div class="col-xl-6 col-lg-12">
+                                    <fieldset class="form-group">
+                                        <label for="clientSelect" class="font-weight-bold">Select Client</label>
+                                        <div class="d-flex align-items-center">
+                                            <select id="clientSelect" class="form-control w-75" name="selectedclient"
+                                                (change)="onGetPayementClient($event.target.value)">
+                                                <option value="" disabled selected>Select client</option>
+                                                <option *ngFor="let client of listClient" [value]="client._id">
+                                                    {{ client.nom + " " + client.prenom }}
+                                                </option>
+                                            </select>
+
+                                            <!-- View Details Button -->
+                                            <button
+                                                *ngIf="listPayementClient?.length > 0 && listPayementClient[0]?.idClient"
+                                                class="btn btn-sm btn-primary ml-2" (click)="onViewDetails()">
+                                                <i data-feather="eye" class="mr-1"></i> View
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <!-- Right Column: Additional Info -->
+                                <div class="col-xl-6 col-lg-12 mt-3 mt-xl-0"
+                                    *ngIf="listPayementClient?.length > 0 && listPayementClient[0]?.idClient">
+                                    <div class="user-info-wrapper border rounded p-2 shadow-sm"
+                                        style="max-height: 200px; overflow-y: auto;">
+                                        <!-- Client Details -->
+                                        <h6 class="font-weight-bold text-primary mb-2">Client Information</h6>
+                                        <ng-container *ngFor="let info of clientInfo">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i [data-feather]="info.icon" class="mr-2 text-primary"></i>
+                                                <span class="font-weight-bold">{{ info.label }}:</span>
+                                                <span class="ml-auto text-muted">{{ info.value }}</span>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End Filter Card -->
+
+            <!-- Table and Pagination -->
+            <div class="card">
+
+                <!-- Total Amount -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-end align-items-center m-1">
+                            <label class="d-flex align-items-center">
+                                Montant Total:
+                                <span class="font-weight-bold ml-2" id="totalAmount">{{montantTotal}} TND</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Total Amount -->
+
+
+                <table class="table table-striped table-responsive table-sm w-100 d-block d-md-table">
+                    <thead>
+                        <tr>
+                            <th>N° Payement</th>
+                            <th>Mode Payement</th>
+                            <th>Echéance</th>
+                            <th>N° Pièce</th>
+                            <th>Banque</th>
+                            <th>N° Compte</th>
+                            <th>Montant</th>
+                            <th>Réglé</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="listPayementClient?.length > 0; else noResults">
+                        <tr *ngFor="let payement of listPayementClient">
+                            <td>{{ payement.numPaiement }}</td>
+                            <td>{{ payement.idModePayement.libelle }}</td>
+                            <td>{{ payement.echeance | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ payement.numPiece }}</td>
+                            <td>{{ payement.idBanque.libelle }}</td>
+                            <td>{{ payement.idClient.compte }}</td>
+                            <td>{{ payement.montant }}</td>
+                            <td>{{ payement.regle }}</td>
+                            <td>
+                                <!-- Dropdown for Actions -->
+                                <div ngbDropdown container="body">
+                                    <button ngbDropdownToggle type="button" class="btn icon-btn btn-sm hide-arrow"
+                                        rippleEffect>
+                                        <span [data-feather]="'more-vertical'" class="cursor-pointer"></span>
+                                    </button>
+                                    <div ngbDropdownMenu>
+                                        
+                                        <a [routerLink]="['/reglement/edit-payement-client', payement._id]"
+                                            ngbDropdownItem>
+                                            <span [data-feather]="'edit'" [size]="16" class="mr-50"></span> Edit
+                                        </a>
+                                        <a ngbDropdownItem (click)="onDeletePayementClient(payement._id)">
+                                            <span [data-feather]="'trash'" [size]="16" class="mr-50"></span> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noResults>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <ngb-alert type="warning" class="mb-2 mt-2 w-50 mx-auto p-2 ">
+                                    <div class="alert-heading">Aucun résultat trouvé</div>
+                                    <div class="alert-body mt-1 ">
+                                        Veuillez modifier les filtres pour afficher Resultats
+                                    </div>
+                                </ngb-alert>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                </table>
+
+            </div>
+        </section>
+    </div>
+</div>

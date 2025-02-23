@@ -1,0 +1,160 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section id="home-page">
+      <div class="row">
+        <!-- Statistiques Card -->
+        <div class="col-lg-8 col-md-12 col-sm-12">
+          <div class="card card-statistics">
+            <div class="card-header">
+              <h4 class="card-title">Statistiques</h4>
+              <div class="d-flex align-items-center">
+                <p class="card-text mr-25 mb-0">Statistiques de cette année {{ currentYear }}</p>
+              </div>
+            </div>
+            <div class="card-body statistics-body">
+              <div class="row">
+                <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                  <div class="media">
+                    <div class="avatar bg-light-primary mr-2">
+                      <div class="avatar-content">
+                        <i data-feather="user" class="avatar-icon"></i>
+                      </div>
+                    </div>
+                    <div class="media-body my-auto">
+                      <h4 class="font-weight-bolder mb-0">{{ nbClients }}</h4>
+                      <p class="card-text font-small-3 mb-0">Clients</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                  <div class="media">
+                    <div class="avatar bg-light-warning mr-2">
+                      <div class="avatar-content">
+                        <i data-feather="user" class="avatar-icon"></i>
+                      </div>
+                    </div>
+                    <div class="media-body my-auto">
+                      <h4 class="font-weight-bolder mb-0">{{ nbFournisseurs }}</h4>
+                      <p class="card-text font-small-3 mb-0">Fournisseurs</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                  <div class="media">
+                    <div class="avatar bg-light-danger mr-2">
+                      <div class="avatar-content">
+                        <i data-feather="home" class="avatar-icon"></i>
+                      </div>
+                    </div>
+                    <div class="media-body my-auto">
+                      <h4 class="font-weight-bolder mb-0">{{ nbBanques }}</h4>
+                      <p class="card-text font-small-3 mb-0">Banques</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12">
+                  <div class="media">
+                    <div class="avatar bg-light-success mr-2">
+                      <div class="avatar-content">
+                        <i data-feather="briefcase" class="avatar-icon"></i>
+                      </div>
+                    </div>
+                    <div class="media-body my-auto">
+                      <h4 class="font-weight-bolder mb-0">{{ nbSociete }}</h4>
+                      <p class="card-text font-small-3 mb-0">Societés</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aperçu des Statistiques client & fournisseures -->
+        <div class="col-lg-8 col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h4 class="card-title">Aperçu des statistiques</h4>
+                <span class="card-subtitle text-muted">Réseaux commerciaux et relations fournisseurs</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <canvas class="line-chart-ex chartjs" baseChart height="400" [datasets]="lineChart.datasets"
+                [chartType]="lineChart.chartType" [options]="lineChart.options" [labels]="lineChart.labels"
+                [plugins]="plugins">
+              </canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sessions Card -->
+        <div class="col-lg-4 col-md-12 col-12 ">
+          <div class="card session-card">
+            <div class="card-header d-flex justify-content-between align-items-end">
+              <h4>Sessions par Type</h4>
+            </div>
+            <div class="card-body">
+              <div id="sessionChartoptions" class="mb-1" #sessionChartoptionsRef>
+                <apx-chart
+                    [chart]="{
+                      type: 'donut',
+                      height: 320,
+                      width: isMenuToggled === false ? sessionChartoptionsRef.offsetWidth : sessionChartoptions.chart.width,
+                      toolbar: { show: false }
+                    }"
+                    [dataLabels]="sessionChartoptions.dataLabels"
+                    [series]="data.sessionsByDevice.series"
+                    [legend]="{
+                      position: 'bottom',
+                      labels: {
+                        colors: ['#FF6347', '#4CAF50', '#2196F3', '#FFEB3B'], 
+                        fontSize: '14px',   
+                        fontWeight: 'bold' 
+                      },
+                      markers: {
+                        width: 10,
+                        height: 10,
+                        radius: 10,
+                        colors: ['#FF6347', '#4CAF50', '#2196F3', '#FFEB3B']  
+                      }
+                    }"
+                    [labels]="sessionChartoptions.labels" 
+                    [stroke]="sessionChartoptions.stroke"
+                    [colors]="sessionChartoptions.colors"
+                  >
+                </apx-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aperçu des Statistiques solde final  -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h4 class="card-title">Aperçu des statistiques</h4>
+                <span class="card-subtitle text-muted">Solde final</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <canvas id="lineChart"></canvas>
+
+            </div>
+          </div>
+        </div>
+
+        
+        <!-- Aperçu des Statistiques Tresorerie du Mois -->
+
+
+
+      </div>
+    </section>
+
+  </div>
+</div>

@@ -1,0 +1,63 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+@import '@core/scss/base/pages/app-user.scss';
+@import '@core/scss/angular/libs/select.component.scss';
+
+/* Popup styling for confirmation */
+.popup-confirmation {
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.title-style {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.icon-style {
+    font-size: 2rem;
+}
+
+.confirm-btn {
+    background-color: #3085d6;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.cancel-btn {
+    background-color: #d33;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Success popup styling */
+.popup-success {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.success-title {
+    color: #28a745;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.success-btn {
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Add animations */
+@import 'animate.css';
+/* If not already included, import animate.css for animations */
+
+/* Additional animation styles */
+.animate__fadeIn {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}

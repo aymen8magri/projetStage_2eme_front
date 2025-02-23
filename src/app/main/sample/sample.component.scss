@@ -1,0 +1,10 @@
+.session-card {
+    position: relative;
+}
+
+@media (min-width: 1200px) {
+    .session-card {
+        position: relative;
+        top: -207px;
+    }
+}

@@ -1,0 +1,104 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+
+        <!-- User List Section -->
+        <section class="users-list-wrapper">
+
+            <!-- Table and Pagination -->
+            <div class="card">
+
+                <!-- Entries and Add Button -->
+                <div class="row">
+                    <!-- Items Per Page -->
+                    <div class="col-md-6 col-12">
+                        <div class="d-flex justify-content-between align-items-center m-1">
+                            <label class="d-flex align-items-center">Show
+                                <select class="form-control mx-25" [(ngModel)]="itemsPerPage"
+                                    (change)="onItemsPerPageChange(itemsPerPage)">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                entries
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Search and Add New -->
+                    <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+                        <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+                            <label class="d-flex align-items-center ml-1 ml-md-0">
+                                Search:
+                                <input name="searchValue" type="search" class="form-control ml-25" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Entries and Add Button -->
+
+                <!-- User Table -->
+                <table class="table table-striped table-responsive table-sm w-100 d-block d-md-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Libelle du Région</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through paginatedClient -->
+                        <tr *ngFor="let row of paginatedRegion">
+                            <td>
+                                <div [ngClass]="{
+                                    'avatar': true,
+                                    'bg-light-danger': row.code.length === 3,
+                                    'bg-light-warning': row.code.length === 2,
+                                    'bg-light-info': row.code.length === 1,
+                                    'bg-light-primary': row.code.length !== 1 && row.code.length !== 2 && row.code.length !== 3
+                                }">
+                                  <span class="avatar-content">{{ row.code }}</span>
+                                </div>
+                              </td>
+                              
+
+                            <td>
+                                <p class="font-weight-bold mb-0">{{ row.libelle }}</p>
+                            </td>
+                            <td>
+                                <!-- Dropdown for Actions -->
+                                <div ngbDropdown container="body">
+                                    <button ngbDropdownToggle type="button" class="btn icon-btn btn-sm hide-arrow"
+                                        rippleEffect>
+                                        <span [data-feather]="'more-vertical'" class="cursor-pointer"></span>
+                                    </button>
+                                    <div ngbDropdownMenu>
+                                        <a [routerLink]="['/gestion-des-entities/edit-regions/', row._id]" ngbDropdownItem>
+                                            <span [data-feather]="'edit'" [size]="16" class="mr-50"></span> Edit
+                                        </a>
+                                        <a ngbDropdownItem (click)="deleteMode(row._id)">
+                                            <span [data-feather]="'trash'" [size]="16" class="mr-50"></span> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- End User Table -->
+
+            </div>
+            <!-- End Table and Pagination -->
+
+        </section>
+        <!--/ User List -->
+
+        <!-- Pagination Component -->
+        <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="itemsPerPage"
+            (pageChange)="onPageChange($event)" aria-label="Pagination"></ngb-pagination>
+
+
+
+    </div>
+</div>
